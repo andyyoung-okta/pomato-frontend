@@ -1,9 +1,5 @@
 const SettingsBody = () => {
-  return (
-    <div>
-      Settings Body
-    </div>
-  )
-}
+  return <div>Settings Body</div>;
+};
 
 export default SettingsBody;

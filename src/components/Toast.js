@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toastActions } from '../store/toast';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toastActions } from "../store/toast";
 
 const Toast = () => {
   const dispatch = useDispatch();
@@ -17,9 +17,11 @@ const Toast = () => {
 
   return (
     <div>
-      {messages.slice(0, 5).map(({ id, message }) => <div key={id}>{message}</div>)}
+      {messages.slice(0, 5).map(({ id, message }) => (
+        <div key={id}>{message}</div>
+      ))}
     </div>
-  )
-}
+  );
+};
 
 export default Toast;

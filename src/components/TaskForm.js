@@ -3,7 +3,7 @@ const TaskForm = () => {
     <form>
       <input type="text" />
     </form>
-  )
-}
+  );
+};
 
 export default TaskForm;

@@ -1,12 +1,12 @@
-import React, { Fragment } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store/index';
-import Toast from './components/Toast';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import AppBody from './views/AppBody';
-import SettingsBody from './views/SettingsBody';
+import React, { Fragment } from "react";
+import { Switch, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store/index";
+import Toast from "./components/Toast";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import AppBody from "./views/AppBody";
+import SettingsBody from "./views/SettingsBody";
 
 const App = () => {
   return (
@@ -24,6 +24,6 @@ const App = () => {
       <Footer />
     </Provider>
   );
-}
+};
 
 export default App;
