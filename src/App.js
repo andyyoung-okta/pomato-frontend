@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store/index';
+import Toast from './components/Toast';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import AppBody from './views/AppBody';
+import SettingsBody from './views/SettingsBody';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Toast />
+      <Navbar />
+      <Switch>
+        <Route path="/" exact>
+          <AppBody />
+        </Route>
+        <Route path="/settings">
+          <SettingsBody />
+        </Route>
+      </Switch>
+      <Footer />
+    </Provider>
   );
 }
 
