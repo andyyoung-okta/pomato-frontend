@@ -1,11 +1,14 @@
 import React, { Fragment, useState, useRef, useEffect } from "react";
 import EditableTaskAction from "./EditableTaskAction";
-import { tasklistActions } from "../store/tasklist";
-import { useDispatch } from "react-redux";
 
-const EditableTask = ({ task }) => {
-  const dispatch = useDispatch();
-  const [disabled, setDisabled] = useState(true);
+const EditableTask = ({
+  task,
+  disabled,
+  onEdit,
+  onDelete,
+  onSave,
+  onCancel,
+}) => {
   const [name, setName] = useState(task.name);
   const [expected, setExpected] = useState(task.expected);
   const nameInput = useRef();
@@ -17,29 +20,26 @@ const EditableTask = ({ task }) => {
   }, [disabled]);
 
   const editHandler = () => {
-    setDisabled(false);
+    onEdit(task.id);
   };
 
   const deleteHandler = () => {
-    dispatch(tasklistActions.remove(task.id));
+    onDelete(task.id);
   };
 
   const saveHandler = () => {
-    setDisabled(true);
-    dispatch(
-      tasklistActions.update({
-        id: task.id,
-        actual: task.actual,
-        name,
-        expected,
-      })
-    );
+    onSave({
+      id: task.id,
+      actual: task.actual,
+      name,
+      expected,
+    });
   };
 
   const cancelHandler = () => {
-    setDisabled(true);
     setName(task.name);
     setExpected(task.expected);
+    onCancel();
   };
 
   const nameHandler = (event) => {
@@ -51,10 +51,10 @@ const EditableTask = ({ task }) => {
   };
 
   const enterHandler = (event) => {
-    if (event.code === 'Enter') {
+    if (event.code === "Enter") {
       saveHandler();
     }
-  }
+  };
 
   return (
     <div>
