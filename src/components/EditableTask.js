@@ -3,9 +3,8 @@ import EditableTaskAction from "./EditableTaskAction";
 import { tasklistActions } from "../store/tasklist";
 import { useDispatch } from "react-redux";
 
-const EditableTask = ({ task }) => {
+const EditableTask = ({ task, disabled, setEditing }) => {
   const dispatch = useDispatch();
-  const [disabled, setDisabled] = useState(true);
   const [name, setName] = useState(task.name);
   const [expected, setExpected] = useState(task.expected);
   const nameInput = useRef();
@@ -17,15 +16,16 @@ const EditableTask = ({ task }) => {
   }, [disabled]);
 
   const editHandler = () => {
-    setDisabled(false);
+    setEditing(task.id);
   };
 
   const deleteHandler = () => {
+    setEditing(null);
     dispatch(tasklistActions.remove(task.id));
   };
 
   const saveHandler = () => {
-    setDisabled(true);
+    setEditing(null);
     dispatch(
       tasklistActions.update({
         id: task.id,
@@ -37,7 +37,7 @@ const EditableTask = ({ task }) => {
   };
 
   const cancelHandler = () => {
-    setDisabled(true);
+    setEditing(null);
     setName(task.name);
     setExpected(task.expected);
   };
