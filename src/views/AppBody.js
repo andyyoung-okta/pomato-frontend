@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 const AppBody = () => {
   const username = useSelector((state) => state.username.username);
 
+  console.log(username);
+
   const content = () => {
     if (!username) {
       return <UsernameForm />;

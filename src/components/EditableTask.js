@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { Fragment, useState, useRef, useEffect } from "react";
 import EditableTaskAction from "./EditableTaskAction";
 import { tasklistActions } from "../store/tasklist";
 import { useDispatch } from "react-redux";
@@ -8,6 +8,13 @@ const EditableTask = ({ task }) => {
   const [disabled, setDisabled] = useState(true);
   const [name, setName] = useState(task.name);
   const [expected, setExpected] = useState(task.expected);
+  const nameInput = useRef();
+
+  useEffect(() => {
+    if (!disabled) {
+      nameInput.current.focus();
+    }
+  }, [disabled]);
 
   const editHandler = () => {
     setDisabled(false);
@@ -43,6 +50,12 @@ const EditableTask = ({ task }) => {
     setExpected(event.target.value);
   };
 
+  const enterHandler = (event) => {
+    if (event.code === 'Enter') {
+      saveHandler();
+    }
+  }
+
   return (
     <div>
       <input
@@ -50,13 +63,16 @@ const EditableTask = ({ task }) => {
         type="text"
         value={name}
         onChange={nameHandler}
+        onKeyDown={enterHandler}
         disabled={disabled}
+        ref={nameInput}
       />
       <input
         className="border"
         type="text"
         value={expected}
         onChange={expectedHandler}
+        onKeyDown={enterHandler}
         disabled={disabled}
       />
       {disabled && (
