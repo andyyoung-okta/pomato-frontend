@@ -13,7 +13,7 @@ const TaskList = () => {
     <Fragment>
       <div>Hi {username}, you are on TaskList!</div>
       {active.map((task) => (
-        <EditableTask key={task.id} task={task} disabled={task.id !== editing} setEditing={setEditing} />
+        <EditableTask key={task.id} task={task} editing={editing} setEditing={setEditing} />
       ))}
       <TaskForm />
     </Fragment>

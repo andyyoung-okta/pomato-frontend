@@ -3,11 +3,13 @@ import EditableTaskAction from "./EditableTaskAction";
 import { tasklistActions } from "../store/tasklist";
 import { useDispatch } from "react-redux";
 
-const EditableTask = ({ task, disabled, setEditing }) => {
+const EditableTask = ({ task, editing, setEditing }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState(task.name);
   const [expected, setExpected] = useState(task.expected);
   const nameInput = useRef();
+
+  const disabled = task.id !== editing;
 
   useEffect(() => {
     if (!disabled) {
