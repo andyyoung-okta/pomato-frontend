@@ -1,22 +1,24 @@
 import React, { Fragment } from "react";
 import UsernameForm from "../components/UsernameForm";
-import TaskList from "../components/TaskList";
+import CreateTaskList from "../components/CreateTaskList";
+import Timer from "../components/Timer";
 import { useSelector } from "react-redux";
 
 const AppBody = () => {
-  const username = useSelector((state) => state.username.username);
+  const username = useSelector((state) => state.global.username);
+  const started = useSelector((state) => state.global.started);
 
   console.log(username);
 
-  const content = () => {
-    if (!username) {
-      return <UsernameForm />;
-    } else {
-      return <TaskList />;
-    }
-  };
+  if (!username) {
+    return <UsernameForm />;
+  }
 
-  return content();
+  if (!started) {
+    return <CreateTaskList />;
+  }
+
+  return <Timer />;
 };
 
 export default AppBody;

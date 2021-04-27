@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { toastActions } from "../store/toast";
-import { usernameActions } from "../store/username";
+import { globalActions } from "../store/global";
 
 const UsernameForm = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const UsernameForm = () => {
     if (inputRef.current.value.trim().length === 0) {
       dispatch(toastActions.add("error: username is empty!"));
     } else {
-      dispatch(usernameActions.setUsername(inputRef.current.value));
+      dispatch(globalActions.setUsername(inputRef.current.value));
     }
   };
 

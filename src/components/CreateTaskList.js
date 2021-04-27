@@ -1,11 +1,13 @@
 import React, { Fragment, useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EditableTask from "./EditableTask";
 import TaskForm from "./TaskForm";
+import { globalActions } from "../store/global";
 
-const TaskList = () => {
+const CreateTaskList = () => {
+  const dispatch = useDispatch();
   const active = useSelector((state) => state.tasklist.active);
-  const username = useSelector((state) => state.username.username);
+  const username = useSelector((state) => state.global.username);
 
   const syncedInputs = () => {
     return active.reduce(
@@ -29,9 +31,14 @@ const TaskList = () => {
     formInput.current.focus();
   }, [active]);
 
+  const startHandler = () => {
+    dispatch(globalActions.start());
+  }
+
   return (
     <Fragment>
-      <div>Hi {username}, you are on TaskList!</div>
+      <div>Hi {username}, you are on CreateTaskList!</div>
+      <button onClick={startHandler} disabled={active.length === 0}>Start Session</button>
       {Object.entries(inputs).map(([id]) => (
         <EditableTask
           key={id}
@@ -48,4 +55,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default CreateTaskList;

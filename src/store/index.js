@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import usernameReducer from "./username";
+import globalReducer from "./global";
 import toastReducer from "./toast";
 import tasklistReducer from "./tasklist";
 
 const store = configureStore({
   reducer: {
-    username: usernameReducer,
+    global: globalReducer,
     toast: toastReducer,
     tasklist: tasklistReducer,
   },
