@@ -1,25 +1,29 @@
 import React, { Fragment, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { tasklistActions } from "../store/tasklist";
 import EditableTaskAction from "./EditableTaskAction";
 
-const EditableTask = ({ id, initialInputs, inputs, setInputs, editing, setEditing }) => {
+const EditableTask = ({ id, editing, setEditing }) => {
   const dispatch = useDispatch();
-  const [name, expected] = inputs[id] ? inputs[id] : ["", ""];
+  const inputs = useSelector((state) => state.tasklist.inputs);
+  const [name, expected] = inputs[id];
   const disabled = id !== editing;
   const [nameInput, expectedInput] = [useRef(), useRef()];
 
+  console.log(name, expected);
+
   const inputHandler = () => {
-    setInputs((prevState) => {
-      return {
-        ...prevState,
-        [id]: [nameInput.current.value, expectedInput.value],
-      };
-    });
+    dispatch(
+      tasklistActions.type({
+        id,
+        name: nameInput.current.value,
+        expected: expectedInput.current.value,
+      })
+    );
   }
 
   const editHandler = () => {
-    setInputs(initialInputs);
+    dispatch(tasklistActions.reset(id));
     setEditing(id);
     nameInput.current.focus();
   }
@@ -42,7 +46,7 @@ const EditableTask = ({ id, initialInputs, inputs, setInputs, editing, setEditin
 
   const cancelHandler = () => {
     setEditing(null);
-    setInputs(initialInputs);
+    dispatch(tasklistActions.reset(id));
   }
 
   return (
