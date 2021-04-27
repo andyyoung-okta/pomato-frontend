@@ -5,15 +5,17 @@ import EditableTaskAction from "./EditableTaskAction";
 
 const EditableTask = ({ id, initialInputs, inputs, setInputs, editing, setEditing }) => {
   const dispatch = useDispatch();
-  const [name, expected] = inputs[id] ? inputs[id] : ["", ""];
+  const [name, expected] = inputs[id];
   const disabled = id !== editing;
   const [nameInput, expectedInput] = [useRef(), useRef()];
+
+  console.log(name, expected);
 
   const inputHandler = () => {
     setInputs((prevState) => {
       return {
         ...prevState,
-        [id]: [nameInput.current.value, expectedInput.value],
+        [id]: [nameInput.current.value, expectedInput.current.value],
       };
     });
   }

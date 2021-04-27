@@ -23,8 +23,16 @@ const TaskList = () => {
   return (
     <Fragment>
       <div>Hi {username}, you are on TaskList!</div>
-      {active.map(({ id }) => (
-        <EditableTask key={id} id={id} initialInputs={initialInputs} inputs={inputs} setInputs={setInputs} editing={editing} setEditing={setEditing} />
+      {Object.entries(inputs).map(([id]) => (
+        <EditableTask
+          key={id}
+          id={id}
+          initialInputs={initialInputs}
+          inputs={inputs}
+          setInputs={setInputs}
+          editing={editing}
+          setEditing={setEditing}
+        />
       ))}
       <TaskForm mainInput={formInput} />
     </Fragment>
