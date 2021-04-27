@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { tasklistActions } from "../store/tasklist";
+import { anyEmpty } from "../utils";
 
 const TaskForm = ({ mainInput }) => {
   const dispatch = useDispatch();
@@ -13,12 +14,8 @@ const TaskForm = ({ mainInput }) => {
   const [inputs, setInputs] = useState(initialState);
   const [disabled, setDisabled] = useState(true);
 
-  const isEmpty = (string) => {
-    return string.trim().length === 0;
-  };
-
   useEffect(() => {
-    setDisabled(isEmpty(inputs.name) || isEmpty(inputs.expected));
+    setDisabled(anyEmpty(inputs.name, inputs.expected));
   }, [inputs]);
 
   const inputHandler = (event) => {
@@ -31,15 +28,30 @@ const TaskForm = ({ mainInput }) => {
   const submitHandler = (event) => {
     event.preventDefault();
     dispatch(tasklistActions.add(inputs));
-    console.log('dispatched')
+    console.log("dispatched");
     setInputs(initialState);
   };
 
   return (
     <form onSubmit={submitHandler}>
-      <input className="border" type="text" onChange={inputHandler} name="name" value={inputs.name} ref={mainInput} />
-      <input className="border" type="text" onChange={inputHandler} name="expected" value={inputs.expected} />
-      <button type="submit" disabled={disabled}>Add Task</button>
+      <input
+        className="border"
+        type="text"
+        onChange={inputHandler}
+        name="name"
+        value={inputs.name}
+        ref={mainInput}
+      />
+      <input
+        className="border"
+        type="text"
+        onChange={inputHandler}
+        name="expected"
+        value={inputs.expected}
+      />
+      <button type="submit" disabled={disabled}>
+        Add Task
+      </button>
     </form>
   );
 };

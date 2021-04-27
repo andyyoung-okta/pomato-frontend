@@ -21,11 +21,11 @@ const TaskList = () => {
 
   const sync = () => {
     setInputs(syncedInputs());
-  }
+  };
 
   useEffect(() => {
     sync();
-    console.log("synced")
+    console.log("synced");
     formInput.current.focus();
   }, [active]);
 

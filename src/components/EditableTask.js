@@ -1,6 +1,7 @@
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { tasklistActions } from "../store/tasklist";
+import { anyEmpty } from "../utils";
 import EditableTaskAction from "./EditableTaskAction";
 
 const EditableTask = ({ id, sync, inputs, setInputs, editing, setEditing }) => {
@@ -11,6 +12,12 @@ const EditableTask = ({ id, sync, inputs, setInputs, editing, setEditing }) => {
 
   console.log(name, expected);
 
+  useEffect(() => {
+    if (!disabled) {
+      nameInput.current.focus();
+    }
+  }, [disabled]);
+
   const inputHandler = () => {
     setInputs((prevState) => {
       return {
@@ -18,34 +25,40 @@ const EditableTask = ({ id, sync, inputs, setInputs, editing, setEditing }) => {
         [id]: [nameInput.current.value, expectedInput.current.value],
       };
     });
-  }
+  };
 
   const editHandler = () => {
     sync();
     setEditing(id);
-    nameInput.current.focus();
-  }
+  };
 
   const deleteHandler = () => {
     setEditing(null);
     dispatch(tasklistActions.remove(id));
-  }
+  };
 
-  const saveHandler = () => {
+  const saveHandler = (event) => {
+    event.preventDefault();
+
+    if (anyEmpty(nameInput.current.value, expectedInput.current.value)) {
+      return;
+    }
+
     setEditing(null);
     dispatch(
       tasklistActions.update({
         id,
         name,
         expected,
+        actual: 0,
       })
     );
-  }
+  };
 
   const cancelHandler = () => {
     sync();
     setEditing(null);
-  }
+  };
 
   return (
     <form onSubmit={saveHandler}>
