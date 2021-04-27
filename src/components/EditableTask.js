@@ -1,14 +1,16 @@
-import React, { Fragment, useState, useRef, useEffect } from "react";
-import EditableTaskAction from "./EditableTaskAction";
-import { tasklistActions } from "../store/tasklist";
+import React, { Fragment, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { tasklistActions } from "../store/tasklist";
+import { anyEmpty } from "../utils";
+import EditableTaskAction from "./EditableTaskAction";
 
-const EditableTask = ({ task }) => {
+const EditableTask = ({ id, sync, inputs, setInputs, editing, setEditing }) => {
   const dispatch = useDispatch();
-  const [disabled, setDisabled] = useState(true);
-  const [name, setName] = useState(task.name);
-  const [expected, setExpected] = useState(task.expected);
-  const nameInput = useRef();
+  const [name, expected] = inputs[id];
+  const disabled = id !== editing;
+  const [nameInput, expectedInput] = [useRef(), useRef()];
+
+  console.log(name, expected);
 
   useEffect(() => {
     if (!disabled) {
@@ -16,64 +18,65 @@ const EditableTask = ({ task }) => {
     }
   }, [disabled]);
 
+  const inputHandler = () => {
+    setInputs((prevState) => {
+      return {
+        ...prevState,
+        [id]: [nameInput.current.value, expectedInput.current.value],
+      };
+    });
+  };
+
   const editHandler = () => {
-    setDisabled(false);
+    sync();
+    setEditing(id);
   };
 
   const deleteHandler = () => {
-    dispatch(tasklistActions.remove(task.id));
+    setEditing(null);
+    dispatch(tasklistActions.remove(id));
   };
 
-  const saveHandler = () => {
-    setDisabled(true);
+  const saveHandler = (event) => {
+    event.preventDefault();
+
+    if (anyEmpty(nameInput.current.value, expectedInput.current.value)) {
+      return;
+    }
+
+    setEditing(null);
     dispatch(
       tasklistActions.update({
-        id: task.id,
-        actual: task.actual,
+        id,
         name,
         expected,
+        actual: 0,
       })
     );
   };
 
   const cancelHandler = () => {
-    setDisabled(true);
-    setName(task.name);
-    setExpected(task.expected);
+    sync();
+    setEditing(null);
   };
-
-  const nameHandler = (event) => {
-    setName(event.target.value);
-  };
-
-  const expectedHandler = (event) => {
-    setExpected(event.target.value);
-  };
-
-  const enterHandler = (event) => {
-    if (event.code === 'Enter') {
-      saveHandler();
-    }
-  }
 
   return (
-    <div>
+    <form onSubmit={saveHandler}>
       <input
         className="border"
         type="text"
-        value={name}
-        onChange={nameHandler}
-        onKeyDown={enterHandler}
         disabled={disabled}
+        value={name}
+        onChange={inputHandler}
         ref={nameInput}
       />
       <input
         className="border"
         type="text"
-        value={expected}
-        onChange={expectedHandler}
-        onKeyDown={enterHandler}
         disabled={disabled}
+        value={expected}
+        onChange={inputHandler}
+        ref={expectedInput}
       />
       {disabled && (
         <Fragment>
@@ -85,13 +88,15 @@ const EditableTask = ({ task }) => {
       )}
       {!disabled && (
         <Fragment>
-          <EditableTaskAction onClick={saveHandler}>Save</EditableTaskAction>
+          <EditableTaskAction onClick={saveHandler} type="submit">
+            Save
+          </EditableTaskAction>
           <EditableTaskAction onClick={cancelHandler}>
             Cancel
           </EditableTaskAction>
         </Fragment>
       )}
-    </div>
+    </form>
   );
 };
 

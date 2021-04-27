@@ -1,5 +1,5 @@
-const EditableTaskAction = ({ children, onClick }) => {
-  return <button onClick={onClick}>{children}</button>;
+const EditableTaskAction = (props) => {
+  return <button {...props}>{props.children}</button>;
 };
 
 export default EditableTaskAction;
