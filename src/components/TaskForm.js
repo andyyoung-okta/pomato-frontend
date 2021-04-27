@@ -30,7 +30,8 @@ const TaskForm = ({ mainInput }) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    dispatch(tasklistActions.add({ ...inputs }));
+    dispatch(tasklistActions.add(inputs));
+    console.log('dispatched')
     setInputs(initialState);
   };
 

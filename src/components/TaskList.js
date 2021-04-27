@@ -6,17 +6,26 @@ import TaskForm from "./TaskForm";
 const TaskList = () => {
   const active = useSelector((state) => state.tasklist.active);
   const username = useSelector((state) => state.username.username);
-  const initialInputs = active.reduce(
-    (obj, { id, name, expected }) => ((obj[id] = [name, expected]), obj),
-    {}
-  );
-  const [inputs, setInputs] = useState(initialInputs);
+
+  const syncedInputs = () => {
+    return active.reduce(
+      (obj, { id, name, expected }) => ((obj[id] = [name, expected]), obj),
+      {}
+    );
+  };
+
+  const [inputs, setInputs] = useState(syncedInputs());
   const [editing, setEditing] = useState(null);
 
   const formInput = useRef();
 
+  const sync = () => {
+    setInputs(syncedInputs());
+  }
+
   useEffect(() => {
-    setInputs(initialInputs);
+    sync();
+    console.log("synced")
     formInput.current.focus();
   }, [active]);
 
@@ -27,7 +36,7 @@ const TaskList = () => {
         <EditableTask
           key={id}
           id={id}
-          initialInputs={initialInputs}
+          sync={sync}
           inputs={inputs}
           setInputs={setInputs}
           editing={editing}

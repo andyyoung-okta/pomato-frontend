@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { tasklistActions } from "../store/tasklist";
 import EditableTaskAction from "./EditableTaskAction";
 
-const EditableTask = ({ id, initialInputs, inputs, setInputs, editing, setEditing }) => {
+const EditableTask = ({ id, sync, inputs, setInputs, editing, setEditing }) => {
   const dispatch = useDispatch();
   const [name, expected] = inputs[id];
   const disabled = id !== editing;
@@ -21,7 +21,7 @@ const EditableTask = ({ id, initialInputs, inputs, setInputs, editing, setEditin
   }
 
   const editHandler = () => {
-    setInputs(initialInputs);
+    sync();
     setEditing(id);
     nameInput.current.focus();
   }
@@ -43,8 +43,8 @@ const EditableTask = ({ id, initialInputs, inputs, setInputs, editing, setEditin
   }
 
   const cancelHandler = () => {
+    sync();
     setEditing(null);
-    setInputs(initialInputs);
   }
 
   return (
