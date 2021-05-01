@@ -18,7 +18,7 @@ const AppBody = () => {
     return <CreateTaskList />;
   }
 
-  return <Timer />;
+  return <Timer minutes={1} />;
 };
 
 export default AppBody;
