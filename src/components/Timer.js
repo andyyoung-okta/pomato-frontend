@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { timerActions } from "../store/timer";
+import { tasklistActions } from "../store/tasklist";
+import TaskList from "./TaskList";
 
 const Timer = () => {
   const dispatch = useDispatch();
@@ -15,6 +17,8 @@ const Timer = () => {
       setTimeout(() => {
         dispatch(timerActions.tick());
       }, 1000);
+    } else if (!pomo) {
+      dispatch(tasklistActions.increment());
     }
   }, [seconds]);
 
@@ -43,7 +47,11 @@ const Timer = () => {
       <button onClick={startHandler} disabled={seconds > 0}>
         {content()}
       </button>
+      {
+        !pomo && <button>DONE</button>
+      }
       {total}
+      <TaskList />
     </div>
   );
 };

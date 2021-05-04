@@ -20,8 +20,11 @@ const tasklistSlice = createSlice({
     remove(state, action) {
       state.active = state.active.filter((task) => task.id !== action.payload);
     },
+    increment(state) {
+      state.active[0].actual += 1;
+    },
     finish(state) {
-      state.completed.push(state.ctive[0]);
+      state.completed.push(state.active[0]);
       state.active.shift();
     },
   },
